@@ -1,0 +1,91 @@
+Vite: Benefits
+1. Fast dev server - offers instant hot module replacement (HMR), changes real-time
+2. Efficient build process - bundles code making large scale easier
+3. Native support for modern tech - embraces latest tech for future-proof projects
+4. Flexible config - adapts to acustomized needs
+
+
+Webpack: Benefits
+1. Foundation in React integration - essential for understanding how to scale React projects
+2. Hands-on learning - tons of tutorials and guides
+3. Community support - lots of help from lots of folks
+
+
+Node.js - extends capabilities of JS beyong the browser install: https://nodejs.org/en
+
+Key features:
+- non-blocking I/O: handles the juggling of numerous connections at once
+- event-driven architecture: allows for numerous concurrent activities within app
+- cross-platform capable: works on most operating systems
+
+Example of React project structure:
+|-- node_modules/ (can ignore)
+|-- public/
+|-- |-- index.html
+|-- src/ (folder for code files)
+|-- |-- assets/ (stores files like images)
+|-- |-- App.jsx (main app initialization code)
+|-- |-- main.jsx (entry point for react)
+|-- .eslintrc.cjs (helps identifies potential bugs or issues in code)
+|-- .gitignore (list of files for Github to ignore upon upload)
+|-- package.json (can ignore)
+|-- README.md (auto-generated, can/should update it)
+|-- vite.config.js (stores configurations for vite)
+
+Creating new react project: (npm = node package manager)
+- Use terminal
+- nav to folder
+- 'npx create-vite project-name --temple react'
+- nav into project-name
+- npm install
+- npm run dev (will run application code (cntrl + c to stop running))
+
+when in VS Code, make sure to be in the project folder not the parent folder then:
+'npx install' to install dependencies
+
+<React.StrictMode> (smart safegaurd tool, warns about potential problems and future problems due to upcoming updates, can be turned off)
+
+JSX encapsulates HTML like tags within JavaScript, supports self closing tags, and allows dynamic content with embedded {JavaScript Expressions}
+
+Components of JSX
+Functional => functional programming paradign (newer)
+- multiple functions, each serves 1 purpose
+- copies incoming data and changes the copy instead of the original
+- functions can be combined for more complex situations
+Class => object oriented programming paradign (older)
+- encapsulation inheritance
+
+Use .module.css for specific styling to avoid cross contamination
+
+Best Practices:
+- component structure: everything has a specific role, keep it small, focused, and reusable
+- consistent styling: unify the result
+- efficient state management: locol for component specific and tools like Redux & Context API for complex apps
+- props over state: makes testing and maintanence easier
+- avoid over engineering: hinders performance and maintainability
+
+Common Pitfalls:
+- mutating state directly: always use 'setState' or 'useState'
+- overusing refs: can break flow of app
+- neglecting component keys in lists: each item should have a unique "key" prop
+- ignoring performance optimization: optimize when necessary
+- inconsistent file and component names: use consistent naming convention to stay organized
+
+
+
+What is state? 
+allows dynamic and responsive page with realtime updates
+
+What is a stateful vs stateless component?
+stateful is a class based component; navigate and manage own state; user input, system events
+stateless is a function based component; when given same properties will always produce same result without side effects
+
+with new REACT updates, a function based component can affect state the way a class based component would without needing the class component
+the class based component cannot do what the function based components do
+function based components are the common use, class based components should be used only when asked for
+
+
+Props = properties
+prop-drilling = passign data from a parent component to a child component
+
+Conditional Rendering - if true run function x, if false run function y

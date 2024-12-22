@@ -1,6 +1,6 @@
 import BookList from "./BookList"
 
-function App() {
+const App = () => {
 
   return (
     <div>

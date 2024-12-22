@@ -1,11 +1,18 @@
 import '../PortfolioStyles.css';
+import { useState } from 'react';
 
 const Contact = () => {
+    const [contact, setContact] = useState({
+        email: 'john.doe@example.com',
+        linkedIn: 'linkedin.com/in/johndoe'
+    });
+
     return (
         <footer>
             <h2>Contact</h2>
-            <p>Email: john.doe@example.com</p>
-            <p>LinkedIn: linkedin.com/in/johndoe</p>
+            <p>Email: {contact.email}</p>
+            <p>LinkedIn: {contact.linkedIn}</p>
+            {/* can add more */}
         </footer>
     );
 };

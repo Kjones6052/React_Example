@@ -1,0 +1,5 @@
+Mounting ==> Put on the DOM
+
+Updating ==> Updating happens when there is any changes to Props or state
+
+Unmounting ==> Is when the component is removed from the DOM

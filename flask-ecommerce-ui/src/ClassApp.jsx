@@ -7,7 +7,7 @@ import CustomerList from './components/CustomerList';
 import CustomerForm from "./components/CustomerForm";
 
 // App Class Component
-class App extends Component {
+class ClassApp extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -43,4 +43,4 @@ class App extends Component {
 }
 
 // Export App
-export default App;
+export default ClassApp;

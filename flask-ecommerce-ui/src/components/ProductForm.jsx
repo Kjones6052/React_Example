@@ -4,24 +4,38 @@
 
 // Import
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
 import { func, object } from 'prop-types';
+import axios from 'axios';
 
-
-// Create 'Product Form' Function Component
+// Create 'ProductForm' Function Based Component
 const ProductForm = ({ selectedProduct, onProductUpdated }) => {
+
+    // Constructing variables for component
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [errors, setErrors] = useState({});
     const [isSubmitting, setSubmitting] = useState(false);
     const [error, setError] = useState('');
+    const { id } = useParams();
+    const navigate = useNavigate();
 
+    // Wil run as lost as 'ID' is given
     useEffect(() => {
-        if (selectedProduct) {
-            setName(selectedProduct.name);
-            setPrice(selectedProduct.price);
+        if (id) { // if ID run code
+            const fetchProductDetails = async () => {
+                try { 
+                    const response = await axios.get(`http://127.0.0.1:5000/products/${id}`); // GET product data by id
+                    setName(response.data.name); // Assign data to variable
+                    setPrice(response.date.price); // Assign data to variable
+                } catch (error) {
+                    console.error('Error fetching product details:', error); // catch and display errors
+                    setError(error.toString());
+                }
+            };
+            fetchProductDetails();
         }
-    }, [selectedProduct]);
+    }, [id]);
 
     const validateForm = () => {
         const errors = {};
@@ -38,17 +52,17 @@ const ProductForm = ({ selectedProduct, onProductUpdated }) => {
             setSubmitting(true);
             setError(null);
             try {
-                if (selectedProduct) {
-                    await axios.put(`http://127.0.0.1:5000/products/${selectedProduct.id}`, productData);
+                if (id) {
+                    await axios.put(`http://127.0.0.1:5000/products/${id}`, productData);
                 } else {
                     await axios.post('http://127.0.0.1:5000/products', productData)
                 }
-                await new Promise((resolve, reject) => setTimeout(resolve, 5000))
-                onProductUpdated();
                 setName('');
                 setPrice('');
                 setSubmitting(false);
+                navigate('/products'); // redirecting page via navigate
             } catch (error) {
+                console.error('Error submitting product details:', error);
                 setError(error.toString());
                 setSubmitting(false);
             }

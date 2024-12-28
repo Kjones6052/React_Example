@@ -60,8 +60,8 @@ class CustomerList extends Component {
                 <h3>Customers</h3>
                 <ul>
                     {customers.map(customer => (
-                        <li key={customer.id} onClick={() => this.selectCustomer(customer.id)}>
-                            {customer.name}
+                        <li key={customer.id} >
+                            <Link to={`/edit-customer/${customer.id}`}>{customer.name}</Link>
                             <button onClick={() => this.deleteCustomer(customer.id)}>Delete</button>
                         </li>
                     ))}

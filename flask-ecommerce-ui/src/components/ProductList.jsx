@@ -1,33 +1,54 @@
 // Import
-import { array, func } from 'prop-types';
 import axios from 'axios';
+import { array, func } from 'prop-types';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-// Creating Function 'ProductList' Component
+// Creating Function Based 'ProductList' Component
 const ProductList = ({ products, onEditProducts, onProductDeleted }) => {
+
+    // Constructing Variables
+    const [products, setProducts] = useState([]);
+    const navigate = useNavigate();
+
+    // Function to fetch Product Data
+    const fetchProducts = async () => {
+        try {
+            const response = await axios.get('http://127.0.0.1:5000/products'); // GET data and assign value of data to variable 'response'
+            setProducts(response.data); // using 'setProducts' to access the data from 'response'(local scope) and assign it to the variable 'products' constructed for component(global scope)
+        } catch (error) {
+            console.error('Error fetching products:', error); // catch and log errors
+        }
+    };
     
     // DELETE product async function
     const deleteProduct = async (id) => {
         
         // try/catch to catch errors
         try {
-            await axios.delete(`http://127.0.0.1:5000/products/${id}`);
-            onProductDeleted();
+            await axios.delete(`http://127.0.0.1:5000/products/${id}`); // DELETE request to remove product according to 'id'
+            fetchProducts(); // run 'fetchProducts' to update products list
         } catch (error) {
             console.error('Error deleting product', error);
         }
     };
 
+    // Will run once
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
     // Return Output
     return (
         <div className='product-list'>
-            <h1>Products</h1>
+            <h3>Products</h3>
             <ul>
 
                 {/* For 'product' in 'products' */}
                 {products.map(product => (
                     <li key={product.id}>
                         {product.name} (ID: {product.id})
-                        <button onClick={() => onEditProducts(product)}>Edit</button>
+                        <button onClick={() => navigate(`/edit-product/${product}`)}>Edit</button>
                         <button onClick={() => deleteProduct(product.id)}>Delete</button>
                     </li>
                 ))}

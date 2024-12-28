@@ -24,6 +24,33 @@ class CustomerForm extends Component {
         };
     }
 
+    // Function will run when the component is mounted
+    componentDidMount() {
+        const { id } = this.props.params; // Get the route param
+        console.log(id);
+        if (id) {
+            // If an ID is present, fetch customer data for editing
+            this.fetchCustomerData(id);
+        }
+    }
+
+    // Function to fetch Customer Data
+    fetchCustomerData = (id) => {
+        axios.get(`http://127.0.0.1:5000/customers/${id}`)
+            .then(response => {
+                const customerData = response.data;
+                this.setState({
+                    name: customerData.name, 
+                    email: customerData.email, 
+                    phone: customerData.phone, 
+                    selectedCustomerId: id
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching customer data:', error);
+            });
+    };
+
     // Function will run on update of component
     componentDidUpdate(prevProps) {
         if (prevProps.customerId !== this.props.customerId) {
@@ -89,7 +116,6 @@ class CustomerForm extends Component {
 
             httpMethod(apiUrl, customerData)
                 .then(() => {
-                    this.props.onUpdateCustomerList();
 
                     this.setState({
                         name: '',
@@ -99,6 +125,8 @@ class CustomerForm extends Component {
                         selectedCustomerId: null,
                         isLoading: false
                     });
+                    this.props.navigate('/customers')
+                    this.setState({ isLoading: false })
                 })
                 .catch(error => {
                     this.setState({ error: error.toString(), isLoading: false });

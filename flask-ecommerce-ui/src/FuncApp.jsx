@@ -8,7 +8,7 @@ import axios from "axios";
 import './AppStyles.css';
 
 // App Function
-const App = () => {
+const FuncApp = () => {
 
     // Creating variables with functions
     const [products, setProducts] = useState([]);
@@ -61,4 +61,4 @@ const App = () => {
 };
 
 // Export
-export default App;
+export default FuncApp;

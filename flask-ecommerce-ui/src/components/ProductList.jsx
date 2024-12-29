@@ -3,9 +3,10 @@ import axios from 'axios';
 import { array, func } from 'prop-types';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Button, Container, ListGroup, Row, Col } from 'react-bootstrap';
 
 // Creating Function Based 'ProductList' Component
-const ProductList = ({ products, onEditProducts, onProductDeleted }) => {
+const ProductList = () => {
 
     // Constructing Variables
     const [products, setProducts] = useState([]);
@@ -40,20 +41,23 @@ const ProductList = ({ products, onEditProducts, onProductDeleted }) => {
 
     // Return Output
     return (
-        <div className='product-list'>
-            <h3>Products</h3>
-            <ul>
-
-                {/* For 'product' in 'products' */}
-                {products.map(product => (
-                    <li key={product.id}>
-                        {product.name} (ID: {product.id})
-                        <button onClick={() => navigate(`/edit-product/${product}`)}>Edit</button>
-                        <button onClick={() => deleteProduct(product.id)}>Delete</button>
-                    </li>
-                ))}
-            </ul>
-        </div>
+        <Container>
+            <Row>
+                <Col>
+                    <h3>Products</h3>
+                    <ListGroup>
+                        {products.map(product => {
+                            <ListGroup.Item key={product.id} className='d-flex justify-content-between align-items-center shadow-sm p-3 mb-3 bg-white rounded'>
+                                {product.name} (ID: {product.id})
+                                <div>
+                                    <Button variant='primary' onClick={() => navigate(`/edit-product/${product.id}`)} className='me-2'>Edit</Button>
+                                </div>
+                            </ListGroup.Item>
+                        })}
+                    </ListGroup>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 

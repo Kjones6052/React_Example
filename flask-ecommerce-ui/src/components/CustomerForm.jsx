@@ -2,6 +2,7 @@
 import { Component } from "react";
 import axios from 'axios';
 import { func, number } from 'prop-types';
+import { Form, Button, Alert, Container, Modal } from 'react-bootstrap';
 
 
 // Example of Controlled Components
@@ -20,7 +21,8 @@ class CustomerForm extends Component {
             phone: '',
             errors: {},
             selectedCustomerId: null,
-            isLoading: false
+            isLoading: false,
+            showSuccessModal: false
         };
     }
 
@@ -123,10 +125,12 @@ class CustomerForm extends Component {
                         phone: '',
                         errors: {},
                         selectedCustomerId: null,
-                        isLoading: false
+                        isLoading: false,
+                        showSuccessModal: true
                     });
-                    this.props.navigate('/customers')
-                    this.setState({ isLoading: false })
+                    // these are commented out from previous example:
+                    // this.props.navigate('/customers')
+                    // this.setState({ isLoading: false })
                 })
                 .catch(error => {
                     this.setState({ error: error.toString(), isLoading: false });
@@ -134,42 +138,65 @@ class CustomerForm extends Component {
         } else {
             this.setState({ errors });
         }
-        
     };
+
+    // Function to close Modal
+    closeModal = () => {
+        this.setState({
+            showSuccessModal: false,
+            name: '',
+            email: '',
+            phone: '',
+            errors: {},
+            selectedCustomerId: null
+        });
+        this.props.navigate('/customers')
+    }
 
     // Render
     render() {
         
         // Accessing Variables
-        const { name, email, phone } = this.state;
+        const { name, email, phone, errors, error, isLoading, showSuccessModal } = this.state;
 
-        if (isLoading) return <p>Submitting customer data...</p>;
-        if (error) return <p>Error submitting customer data: {error}</p>;
+        
 
         // Return Output
         return (
-            <form onSubmit={this.handleSubmit}>
-                <h3>Add/Edit Customer</h3>
-                <label>
-                    Name:
-                    <input type="text" name="name" value={name} onChange={this.handleChange} />
-                    {errors.name && <div style={{ color: 'red' }}>{errors.name}</div>}
-                </label>
-                <br />
-                <label>
-                    Email:
-                    <input type="email" name="email" value={email} onChange={this.handleChange} />
-                    {errors.email && <div style={{ color: 'red' }}>{errors.email}</div>}
-                </label>
-                <br />
-                <label>
-                    Phone:
-                    <input type="tel" name="phone" value={phone} onChange={this.handleChange} />
-                    {errors.phone && <div style={{ color: 'red' }}>{errors.phone}</div>}
-                </label>
-                <br />
-                <button type="submit">Submit</button>
-            </form>
+            <Container>
+                {isLoading && <Alert variant="info">Submitting customer data...</Alert>}
+                {error && <Alert variant="danger">Error submitting customer data: {error}</Alert>}
+
+                <form onSubmit={this.handleSubmit} >
+                    <Form.Group controlId="formGroupName" >
+                        <Form.Label>Name</Form.Label>
+                        <Form.Control type="text" name="name" value={name} onChange={this.handleChange} />
+                        {errors.name && <div style={{color: 'red'}}>{errors.name}</div>}
+                    </Form.Group>
+                    <Form.Group controlId="formGroupEmail" >
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control type="text" name="email" value={email} onChange={this.handleChange} />
+                        {errors.email && <div style={{color: 'red'}}>{errors.email}</div>}
+                    </Form.Group>
+                    <Form.Group controlId="formGroupPhone" >
+                        <Form.Label>Phone</Form.Label>
+                        <Form.Control type="tel" name="phone" value={phone} onChange={this.handleChange} />
+                        {errors.phone && <div style={{color: 'red'}}>{errors.phone}</div>}
+                    </Form.Group>
+                    <Button variant="primary" type="submit" >Submit</Button>
+                </form>
+                <Modal show={showSuccessModal} onHide={this.closeModal}>
+                    <Modal.Header>
+                        <Modal.Title>Success!</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        The customer has been successfully {this.state.selectedCustomerId ? 'update' : 'added'}.
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={this.closeModal}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
+            </Container>
         )
     };
 };

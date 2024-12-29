@@ -2,6 +2,8 @@
 import { func } from 'prop-types';
 import { Component } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { Form, Button, Alert, Container, Modal, ListGroup } from 'react-bootstrap';
 
 // Creating 'CustomerList' Class Component
 class CustomerList extends Component {
@@ -11,7 +13,8 @@ class CustomerList extends Component {
         super(props);
         this.state = {
             customers: [],
-            selectedCustomerId: null
+            selectedCustomerId: null,
+            error: null
         };
     }
 
@@ -29,6 +32,7 @@ class CustomerList extends Component {
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
+                this.setState({ error: 'Error fetching customers. Please try again later.'});
             });
     }
 
@@ -46,27 +50,29 @@ class CustomerList extends Component {
         })
         .catch(error => {
             console.error('Error deleting customer:', error);
+            this.setState({ error: 'Error deleting customers. Please try again.'});
         });
     }
 
     // Render
     render() {
         // Accessing 'customers' within render
-        const { customers } = this.state;
+        const { customers, error } = this.state;
 
         // Return Output
         return (
-            <div className='customer-list'>
-                <h3>Customers</h3>
-                <ul>
-                    {customers.map(customer => (
-                        <li key={customer.id} >
-                            <Link to={`/edit-customer/${customer.id}`}>{customer.name}</Link>
-                            <button onClick={() => this.deleteCustomer(customer.id)}>Delete</button>
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            <Container>
+                {error && <Alert variant='danger'>{error}</Alert>}
+                <h3 className='mt-3 mb-3 text-center'>Customers</h3>
+                <ListGroup>
+                    {customers.map(customer => {
+                        <ListGroup.Item key={customer.id} className='d-flex justify-content-between alighn-items-center shadow-sm p-3 mb-3 bg-white rounded'>
+                            <Link to={`/edit-customer/${customer.id}`} className='text-primary'>{customer.name}</Link>
+                            <Button variant='danger' size='sm' onClick={() => this.deleteCustomer(customer.id)}>Delete</Button>
+                        </ListGroup.Item>
+                    })}
+                </ListGroup>
+            </Container>
         );
     }
 }

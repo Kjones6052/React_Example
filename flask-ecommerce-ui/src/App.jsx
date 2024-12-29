@@ -8,6 +8,7 @@ import ProductForm from "./components/ProductForm";
 import NavigationBar from "./components/NavigationBar";
 import NotFound from "./components/NotFound";
 import './AppStyles.css';
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 // App Function
 function App() {
